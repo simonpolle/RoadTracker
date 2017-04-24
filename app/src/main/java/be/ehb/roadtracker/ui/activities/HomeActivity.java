@@ -1,24 +1,31 @@
 package be.ehb.roadtracker.ui.activities;
 
 import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.services.implementations.CustomLocationTracker;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.nlopez.smartlocation.OnLocationUpdatedListener;
-import io.nlopez.smartlocation.SmartLocation;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
+import fr.quentinklein.slt.LocationTracker;
+import fr.quentinklein.slt.TrackerSettings;
 
-@RuntimePermissions
 public class HomeActivity extends AppCompatActivity implements CustomLocationTracker.LocationChangedListener
 {
     private CustomLocationTracker customLocationTracker;
@@ -63,29 +70,83 @@ public class HomeActivity extends AppCompatActivity implements CustomLocationTra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener()
+                {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response)
+                    {
+                        start();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response)
+                    {/* ... */}
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token)
+                    {/* ... */}
+                }).check();
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .withListener(new PermissionListener()
+                {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response)
+                    {
+                        start();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response)
+                    {/* ... */}
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token)
+                    {/* ... */}
+                }).check();
         this.customLocationTracker = new CustomLocationTracker(this);
-        enableGpsPermission();
         setupViews();
     }
 
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    void enableGpsPermission()
+    private void start()
     {
-        enableGpsPermission2();
-    }
 
-    @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-    void enableGpsPermission2()
-    {
-        SmartLocation.with(this).location()
-                .start(new OnLocationUpdatedListener()
-                {
-                    @Override
-                    public void onLocationUpdated(Location location)
-                    {
-                       Toast.makeText(HomeActivity.this, "test", Toast.LENGTH_LONG).show();
-                    }
-                });
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationTracker tracker = new LocationTracker(
+                this,
+                new TrackerSettings()
+                        .setUseGPS(true)
+                        .setUseNetwork(true)
+                        .setUsePassive(true)
+                        .setTimeBetweenUpdates(1000)
+        )
+        {
+
+            @Override
+            public void onLocationFound(Location location)
+            {
+                Toast.makeText(HomeActivity.this, location.toString(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onTimeout()
+            {
+                Toast.makeText(HomeActivity.this, "timeout", Toast.LENGTH_LONG).show();
+            }
+        };
+        tracker.startListening();
     }
 
     private void setupViews()

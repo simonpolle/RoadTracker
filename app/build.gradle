@@ -40,8 +40,8 @@ dependencies {
     compile 'com.github.satyan:sugar:1.4'
     testCompile 'junit:junit:4.12'
     provided 'org.projectlombok:lombok:1.12.6'
-    compile 'com.github.hotchemi:permissionsdispatcher:2.3.2'
-    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
+    compile 'com.karumi:dexter:4.1.0'
+    compile 'com.github.quentin7b:android-location-tracker:3.2'
 
     compile 'io.nlopez.smartlocation:library:3.3.1'
 
