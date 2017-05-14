@@ -24,26 +24,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="km's afgelegd"
+            android:text="Kilometers traveled"
             android:ems="10"
-            android:id="@+id/home_totalKmTitle"/>
+            android:id="@+id/home_totalKmTitle"
+            android:textColor="@color/text"
+            android:textSize="25sp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="18 km"
+            android:text="18km"
             android:ems="10"
             android:id="@+id/home_totalKm"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/secondaryText"
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="Trajectkost"
+            android:text="Route costs"
             android:ems="10"
-            android:id="@+id/home_trajectKostTitle"/>
+            android:id="@+id/home_trajectKostTitle"
+            android:textColor="@color/text"
+            android:textSize="25sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -52,15 +58,19 @@
             android:text="3.78 euro"
             android:ems="10"
             android:id="@+id/home_trajectKost"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/secondaryText"
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="Prijs/km"
+            android:text="Cost rate"
             android:ems="10"
-            android:id="@+id/home_prijsKmTitle"/>
+            android:id="@+id/home_prijsKmTitle"
+            android:textColor="@color/text"
+            android:textSize="25sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -69,7 +79,9 @@
             android:text="0.21 euro"
             android:ems="10"
             android:id="@+id/home_prijsKm"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/secondaryText"
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -77,7 +89,9 @@
             android:textAlignment="center"
             android:text="Status"
             android:ems="10"
-            android:id="@+id/home_statusTitle"/>
+            android:id="@+id/home_statusTitle"
+            android:textColor="@color/text"
+            android:textSize="25sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -86,7 +100,9 @@
             android:text="Ready"
             android:ems="10"
             android:id="@+id/home_status"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/secondaryText"
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -94,7 +110,9 @@
             android:textAlignment="center"
             android:text="Location"
             android:ems="10"
-            android:id="@+id/home_locationTitle"/>
+            android:id="@+id/home_locationTitle"
+            android:textColor="@color/text"
+            android:textSize="25sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -103,17 +121,29 @@
             android:text=""
             android:ems="10"
             android:id="@+id/home_location"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/secondaryText"
+            android:textSize="16sp"/>
 
     </LinearLayout>
+
+    <Button
+        android:text="Start"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/home_start"
+        android:layout_marginBottom="41dp"
+        android:backgroundTint="@color/button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:text="Submit route"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:id="@+id/home_button"
+        android:id="@+id/home_stop"
         android:layout_marginBottom="41dp"
-        android:backgroundTint="@android:color/holo_green_light"
+        android:backgroundTint="@color/button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"/>
 </RelativeLayout>

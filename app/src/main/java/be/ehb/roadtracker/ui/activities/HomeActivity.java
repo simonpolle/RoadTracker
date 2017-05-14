@@ -6,7 +6,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,16 +19,13 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import be.ehb.roadtracker.R;
-import be.ehb.roadtracker.services.implementations.CustomLocationTracker;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fr.quentinklein.slt.LocationTracker;
 import fr.quentinklein.slt.TrackerSettings;
 
-public class HomeActivity extends AppCompatActivity implements CustomLocationTracker.LocationChangedListener
+public class HomeActivity extends AppCompatActivity
 {
-    private CustomLocationTracker customLocationTracker;
-
     @BindView(R.id.home_totalKmTitle)
     TextView totalKmTitle;
 
@@ -60,9 +56,11 @@ public class HomeActivity extends AppCompatActivity implements CustomLocationTra
     @BindView(R.id.home_location)
     TextView location;
 
-    @BindView(R.id.home_button)
-    Button button;
+    @BindView(R.id.home_start)
+    Button start;
 
+    @BindView(R.id.home_stop)
+    Button stop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -106,13 +104,11 @@ public class HomeActivity extends AppCompatActivity implements CustomLocationTra
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token)
                     {/* ... */}
                 }).check();
-        this.customLocationTracker = new CustomLocationTracker(this);
         setupViews();
     }
 
     private void start()
     {
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
             // TODO: Consider calling
@@ -124,12 +120,11 @@ public class HomeActivity extends AppCompatActivity implements CustomLocationTra
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        LocationTracker tracker = new LocationTracker(
-                this,
+        LocationTracker tracker = new LocationTracker(this,
                 new TrackerSettings()
                         .setUseGPS(true)
-                        .setUseNetwork(true)
-                        .setUsePassive(true)
+                        .setUseNetwork(false)
+                        .setUsePassive(false)
                         .setTimeBetweenUpdates(1000)
         )
         {
@@ -137,16 +132,34 @@ public class HomeActivity extends AppCompatActivity implements CustomLocationTra
             @Override
             public void onLocationFound(Location location)
             {
-                Toast.makeText(HomeActivity.this, location.toString(), Toast.LENGTH_LONG).show();
+                status.setText("Ready");
+                stop.setText("Running");
+
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
             }
 
             @Override
             public void onTimeout()
             {
-                Toast.makeText(HomeActivity.this, "timeout", Toast.LENGTH_LONG).show();
+                status.setText("Could not find location");
             }
         };
         tracker.startListening();
+    }
+
+    private void stop()
+    {
+        setupResultViews();
     }
 
     private void setupViews()
@@ -157,9 +170,10 @@ public class HomeActivity extends AppCompatActivity implements CustomLocationTra
         this.trajectKost.setVisibility(View.GONE);
         this.prijsKmTitle.setVisibility(View.GONE);
         this.prijsKm.setVisibility(View.GONE);
+        this.stop.setVisibility(View.GONE);
         this.location.setText("UNKNOWN");
-        this.button.setText("Waiting for GPS");
-        this.button.setEnabled(false);
+        this.status.setText("Waiting for GPS");
+        this.start.setEnabled(false);
     }
 
     private void setupResultViews()
@@ -168,6 +182,7 @@ public class HomeActivity extends AppCompatActivity implements CustomLocationTra
         this.status.setVisibility(View.GONE);
         this.locationTitle.setVisibility(View.GONE);
         this.location.setVisibility(View.GONE);
+        this.start.setVisibility(View.GONE);
 
         this.totalKmTitle.setVisibility(View.VISIBLE);
         this.totalKm.setVisibility(View.VISIBLE);
@@ -175,12 +190,6 @@ public class HomeActivity extends AppCompatActivity implements CustomLocationTra
         this.trajectKost.setVisibility(View.VISIBLE);
         this.prijsKmTitle.setVisibility(View.VISIBLE);
         this.prijsKm.setVisibility(View.VISIBLE);
-        this.button.setText("Submit route");
-    }
-
-    @Override
-    public void onChange(Location location)
-    {
-        this.button.setText(location.toString());
+        this.stop.setVisibility(View.VISIBLE);
     }
 }

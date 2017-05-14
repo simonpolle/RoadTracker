@@ -1,5 +1,7 @@
 package be.ehb.roadtracker.domain;
 
+import com.orm.SugarRecord;
+
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties=true)
-public class Route
+public class Route extends SugarRecord
 {
     private List<Route> routes;
 }
