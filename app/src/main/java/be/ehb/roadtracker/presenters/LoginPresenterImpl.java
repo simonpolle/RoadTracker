@@ -1,7 +1,6 @@
 package be.ehb.roadtracker.presenters;
 
 import android.content.Context;
-import android.util.Base64;
 import android.widget.Toast;
 
 import be.ehb.roadtracker.config.ApiClient;
@@ -16,21 +15,21 @@ import rx.schedulers.Schedulers;
  * Created by Simon Pollé on 15/03/2017.
  */
 
-public class AuthenticationPresenter
+public class LoginPresenterImpl implements LoginPresenter
 {
 
     private final Context context;
-    private final AuthenticationPresenterListener listener;
+    private final LoginPresenterListener listener;
     private OAuthService service;
 
-    public interface AuthenticationPresenterListener
+    public interface LoginPresenterListener
     {
         void authenticated(AccessTokenResponse response);
 
         void notAuthenticated();
     }
 
-    public AuthenticationPresenter(Context context, AuthenticationPresenter.AuthenticationPresenterListener listener)
+    public LoginPresenterImpl(Context context, LoginPresenterImpl.LoginPresenterListener listener)
     {
         this.context = context;
         this.listener = listener;
