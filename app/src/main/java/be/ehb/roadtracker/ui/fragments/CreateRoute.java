@@ -1,8 +1,8 @@
 package be.ehb.roadtracker.ui.fragments;
 
-
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +17,7 @@ import be.ehb.roadtracker.ui.views.HomeView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -30,6 +31,7 @@ import java.text.DecimalFormat;
 
 public class CreateRoute extends Fragment implements HomeView
 {
+
     @BindView(R.id.home_statusTitle)
     TextView statusTitle;
 
@@ -54,7 +56,9 @@ public class CreateRoute extends Fragment implements HomeView
     @BindView(R.id.home_submit)
     Button submit;
 
-    public CreateRoute() {}
+    public CreateRoute()
+    {
+    }
 
     public static CreateRoute newInstance(int position)
     {
@@ -63,8 +67,6 @@ public class CreateRoute extends Fragment implements HomeView
         fragment.setArguments(args);
         return fragment;
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,10 +82,27 @@ public class CreateRoute extends Fragment implements HomeView
     @OnClick(R.id.home_start)
     public void start()
     {
-        start.setVisibility(View.GONE);
-        stop.setVisibility(View.VISIBLE);
-        searchAnimation.setVisibility(View.VISIBLE);
-        status.setText("Running");
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("Are you sure you want to start?")
+            .setContentText("You won't be able to pauze this route!")
+            .setConfirmText("Yes,I understand!")
+            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    sDialog
+                        .setTitleText("Started!")
+                        .setContentText("You can drive to your desired location!")
+                        .setConfirmText("OK")
+                        .setConfirmClickListener(null)
+                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                    start.setVisibility(View.GONE);
+                    stop.setVisibility(View.VISIBLE);
+                    searchAnimation.setVisibility(View.VISIBLE);
+                    status.setText("Running");
+                    status.setTextColor(Color.GREEN);
+                }
+            })
+            .show();
     }
 
     @OnClick(R.id.home_stop)
@@ -92,6 +111,8 @@ public class CreateRoute extends Fragment implements HomeView
         stop.setVisibility(View.GONE);
         submit.setVisibility(View.VISIBLE);
         searchAnimation.hide();
+        status.setText("Stopped");
+        status.setTextColor(Color.YELLOW);
     }
 
     @OnClick(R.id.home_submit)
@@ -108,6 +129,7 @@ public class CreateRoute extends Fragment implements HomeView
         this.location.setText("UNKNOWN");
         this.searchAnimation.setVisibility(View.VISIBLE);
         this.status.setText("Waiting for GPS");
+        status.setTextColor(Color.RED);
         this.start.setEnabled(false);
     }
 
@@ -125,10 +147,15 @@ public class CreateRoute extends Fragment implements HomeView
                 }
 
                 @Override
-                public void onPermissionDenied(PermissionDeniedResponse response) {}
+                public void onPermissionDenied(PermissionDeniedResponse response)
+                {
+                }
 
                 @Override
-                public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {}
+                public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+                    PermissionToken token)
+                {
+                }
             }).check();
 
         Dexter.withActivity(getActivity())
@@ -142,10 +169,15 @@ public class CreateRoute extends Fragment implements HomeView
                 }
 
                 @Override
-                public void onPermissionDenied(PermissionDeniedResponse response) {}
+                public void onPermissionDenied(PermissionDeniedResponse response)
+                {
+                }
 
                 @Override
-                public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {}
+                public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+                    PermissionToken token)
+                {
+                }
             }).check();
     }
 
@@ -153,7 +185,10 @@ public class CreateRoute extends Fragment implements HomeView
     public void searchLocation()
     {
         if (ActivityCompat
-            .checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            .checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED && ActivityCompat
+            .checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED)
         {
             return;
         }
@@ -169,7 +204,10 @@ public class CreateRoute extends Fragment implements HomeView
             public void onLocationFound(Location l)
             {
                 status.setText("Ready");
-                location.setText(String.valueOf(new DecimalFormat("##.####").format(l.getLatitude())) + "\n" + String.valueOf(new DecimalFormat("##.####").format(l.getLongitude())));
+                status.setTextColor(Color.YELLOW);
+                location.setText(
+                    String.valueOf(new DecimalFormat("##.####").format(l.getLatitude())) + "\n"
+                        + String.valueOf(new DecimalFormat("##.####").format(l.getLongitude())));
                 searchAnimation.hide();
                 start.setEnabled(true);
             }

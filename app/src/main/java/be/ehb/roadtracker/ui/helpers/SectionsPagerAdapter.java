@@ -24,6 +24,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
     {
         if (position == 1)
             return CreateRoute.newInstance(position);
+        else if(position == 2)
+            return CreateRoute.newInstance(position);
+        else if(position == 3)
+            return CreateRoute.newInstance(position);
         else
             return CreateRoute.newInstance(position);
     }
@@ -31,7 +35,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
     @Override
     public int getCount()
     {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -40,11 +44,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
         switch (position)
         {
             case 0:
-                return "tab 1";
+                return "Start";
             case 1:
-                return "tab 2";
+                return "All Routes";
+            case 2:
+                return "Settings";
             default:
-                return "tab 3";
+                return "tab 1";
         }
     }
 }

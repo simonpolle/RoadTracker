@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
-import android.widget.TextView;
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.ui.helpers.SectionsPagerAdapter;
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.wang.avi.AVLoadingIndicatorView;
 
 public class HomeActivity extends AppCompatActivity
 {
