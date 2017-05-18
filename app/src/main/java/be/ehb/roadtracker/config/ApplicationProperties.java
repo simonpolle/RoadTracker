@@ -11,7 +11,7 @@ public class ApplicationProperties
     private static ApplicationProperties instance = null;
     private static String CLIENT_ID = "1";
     private static String CLIENT_SECRET = "JWRZWkEH2UBOWSbQ26d9AoqvYybV6eDg6rDvpOXO";
-    private static String HOST = "http://10.16.25.129:8000";
+    private static String HOST = "http://10.16.26.190:8000";
 
     private ApplicationProperties()
     {

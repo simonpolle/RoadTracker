@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/activity_home"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingTop="@dimen/activity_vertical_margin"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  tools:context="be.ehb.roadtracker.ui.fragments.CreateRoute">
+
+  <android.support.v4.view.ViewPager
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <Button
+    android:id="@+id/home_start"
+    android:layout_width="300dp"
+    android:layout_height="50dp"
+    android:layout_marginBottom="41dp"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:backgroundTint="@color/button"
+    android:text="Start"/>
+
+  <Button
+    android:id="@+id/home_stop"
+    android:layout_width="300dp"
+    android:layout_height="50dp"
+    android:layout_marginBottom="41dp"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:backgroundTint="@color/button"
+    android:text="Stop"/>
+
+  <Button
+    android:id="@+id/home_submit"
+    android:layout_width="300dp"
+    android:layout_height="50dp"
+    android:layout_marginBottom="41dp"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:backgroundTint="@color/button"
+    android:text="Submit"/>
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="38dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_alignParentTop="true"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/home_statusTitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:text="Status"
+      android:textAlignment="center"
+      android:textColor="@color/text"
+      android:textSize="25sp"/>
+
+    <TextView
+      android:id="@+id/home_status"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="20dp"
+      android:ems="10"
+      android:text="Ready"
+      android:textAlignment="center"
+      android:textColor="@color/secondaryText"
+      android:textSize="16sp"/>
+
+    <TextView
+      android:id="@+id/home_locationTitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:text="Location"
+      android:textAlignment="center"
+      android:textColor="@color/text"
+      android:textSize="25sp"/>
+
+    <TextView
+      android:id="@+id/home_location"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="20dp"
+      android:ems="10"
+      android:text=""
+      android:textAlignment="center"
+      android:textColor="@color/secondaryText"
+      android:textSize="16sp"/>
+
+    <com.wang.avi.AVLoadingIndicatorView
+      android:id="@+id/home_searchAnimation"
+      style="@style/AVLoadingIndicatorView.Large"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:visibility="invisible"
+      app:indicatorColor="@color/colorPrimary"
+      app:indicatorName="BallClipRotatePulseIndicator"
+      />
+
+  </LinearLayout>
+</RelativeLayout>

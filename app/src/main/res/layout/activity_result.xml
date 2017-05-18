@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/activity_home"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  android:paddingTop="@dimen/activity_vertical_margin"
+  tools:context="be.ehb.roadtracker.ui.activities.ResultActivity">
+
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:layout_marginTop="38dp"
+    android:layout_alignParentTop="true"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAlignment="center"
+      android:text="Kilometers traveled"
+      android:ems="10"
+      android:id="@+id/home_totalKmTitle"
+      android:textColor="@color/text"
+      android:textSize="25sp"/>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAlignment="center"
+      android:text="18km"
+      android:ems="10"
+      android:id="@+id/home_totalKm"
+      android:layout_marginBottom="20dp"
+      android:textColor="@color/secondaryText"
+      android:textSize="16sp"/>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAlignment="center"
+      android:text="Route costs"
+      android:ems="10"
+      android:id="@+id/home_trajectKostTitle"
+      android:textColor="@color/text"
+      android:textSize="25sp"/>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAlignment="center"
+      android:text="3.78 euro"
+      android:ems="10"
+      android:id="@+id/home_trajectKost"
+      android:layout_marginBottom="20dp"
+      android:textColor="@color/secondaryText"
+      android:textSize="16sp"/>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAlignment="center"
+      android:text="Cost rate"
+      android:ems="10"
+      android:id="@+id/home_prijsKmTitle"
+      android:textColor="@color/text"
+      android:textSize="25sp"/>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAlignment="center"
+      android:text="0.21 euro"
+      android:ems="10"
+      android:id="@+id/home_prijsKm"
+      android:layout_marginBottom="20dp"
+      android:textColor="@color/secondaryText"
+      android:textSize="16sp"/>
+
+  </LinearLayout>
+
+  <Button
+    android:text="Submit route"
+    android:layout_width="300dp"
+    android:layout_height="50dp"
+    android:id="@+id/home_stop"
+    android:layout_marginBottom="41dp"
+    android:backgroundTint="@color/button"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"/>
+</RelativeLayout>
