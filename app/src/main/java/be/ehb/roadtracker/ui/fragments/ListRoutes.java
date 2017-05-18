@@ -13,6 +13,7 @@ import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.domain.Route;
 import be.ehb.roadtracker.presenters.LoginPresenterImpl;
 import be.ehb.roadtracker.presenters.RoutePresenterImpl;
+import be.ehb.roadtracker.ui.helpers.EndlessRecyclerViewScrollListener;
 import be.ehb.roadtracker.ui.helpers.RoutesAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +29,8 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
     private RecyclerView recyclerView;
     private RoutesAdapter mAdapter;
     private RoutePresenterImpl presenter;
+    private EndlessRecyclerViewScrollListener scrollListener;
+
 
     public ListRoutes()
     {
@@ -60,13 +63,23 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
         presenter = new RoutePresenterImpl(view.getContext(), this);
-        presenter.findAll();
+        presenter.findAll(1);
+        scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                presenter.findAll(page + 1);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        recyclerView.addOnScrollListener(scrollListener);
     }
 
     @Override
     public void successfull(List<Route> response)
     {
-        routes.clear();
+        //routes.clear();
         routes.addAll(response);
         mAdapter.notifyDataSetChanged();
         notFound.setEnabled(false);

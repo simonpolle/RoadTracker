@@ -3,12 +3,8 @@ package be.ehb.roadtracker.presenters;
 import android.content.Context;
 import android.widget.Toast;
 import be.ehb.roadtracker.config.ApiClient;
-import be.ehb.roadtracker.config.ApplicationProperties;
-import be.ehb.roadtracker.data.OAuthService;
 import be.ehb.roadtracker.data.RouteService;
-import be.ehb.roadtracker.domain.AccessTokenResponse;
 import be.ehb.roadtracker.domain.Route;
-import be.ehb.roadtracker.presenters.LoginPresenterImpl.LoginPresenterListener;
 import java.util.List;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,11 +33,11 @@ public class RoutePresenterImpl implements RoutePresenter
         this.listener = listener;
     }
 
-    public void findAll()
+    public void findAll(int page)
     {
         service = ApiClient.getClient().create(RouteService.class);
 
-        service.findAll()
+        service.findAll(page)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Route>>()

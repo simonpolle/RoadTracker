@@ -10,7 +10,7 @@ public class ApplicationProperties
 
     private static ApplicationProperties instance = null;
     private static String CLIENT_ID = "1";
-    private static String CLIENT_SECRET = "JWRZWkEH2UBOWSbQ26d9AoqvYybV6eDg6rDvpOXO";
+    private static String CLIENT_SECRET = "Y2jx6ce63UF0Frp3SDOeuoVY0jAmUUfDm1v3ErAK";
     private static String ACCESS_TOKEN = "";
     private static String REFRESH_TOKEN = "";
     private static String HOST = "http://192.168.0.128:8000";

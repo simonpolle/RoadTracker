@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -21,7 +22,7 @@ public interface RouteService
     String base = "api/route";
 
     @GET(base)
-    Observable<List<Route>> findAll();
+    Observable<List<Route>> findAll(@Query("page") int page);
 
     @GET(base + "/{id}")
     Observable<Route> findOne(@Path("id") Long id);

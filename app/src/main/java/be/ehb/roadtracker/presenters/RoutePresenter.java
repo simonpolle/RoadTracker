@@ -6,5 +6,5 @@ package be.ehb.roadtracker.presenters;
 
 public interface RoutePresenter
 {
-    void findAll();
+    void findAll(int page);
 }
