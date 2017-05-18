@@ -2,11 +2,14 @@ package be.ehb.roadtracker.presenters;
 
 import android.content.Context;
 import android.widget.Toast;
-
 import be.ehb.roadtracker.config.ApiClient;
 import be.ehb.roadtracker.config.ApplicationProperties;
 import be.ehb.roadtracker.data.OAuthService;
+import be.ehb.roadtracker.data.RouteService;
 import be.ehb.roadtracker.domain.AccessTokenResponse;
+import be.ehb.roadtracker.domain.Route;
+import be.ehb.roadtracker.presenters.LoginPresenterImpl.LoginPresenterListener;
+import java.util.List;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -15,34 +18,33 @@ import rx.schedulers.Schedulers;
  * Created by Simon Pollé on 15/03/2017.
  */
 
-public class LoginPresenterImpl implements LoginPresenter
+public class RoutePresenterImpl implements RoutePresenter
 {
 
     private final Context context;
-    private final LoginPresenterListener listener;
-    private OAuthService service;
+    private final RoutePresenterListener listener;
+    private RouteService service;
 
-    public interface LoginPresenterListener
+    public interface RoutePresenterListener
     {
-        void authenticated(AccessTokenResponse response);
-
-        void notAuthenticated();
+        void successfull(List<Route> response);
+        void unsuccessfull();
     }
 
-    public LoginPresenterImpl(Context context, LoginPresenterImpl.LoginPresenterListener listener)
+    public RoutePresenterImpl(Context context, RoutePresenterImpl.RoutePresenterListener listener)
     {
         this.context = context;
         this.listener = listener;
     }
 
-    public void login(String email, String password)
+    public void findAll()
     {
-        service = ApiClient.getClient().create(OAuthService.class);
+        service = ApiClient.getClient().create(RouteService.class);
 
-        service.getAccessToken("password", ApplicationProperties.getClientId(), ApplicationProperties.getClientSecret(), email, password)
+        service.findAll()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AccessTokenResponse>()
+                .subscribe(new Observer<List<Route>>()
                 {
                     @Override
                     public void onCompleted()
@@ -53,19 +55,16 @@ public class LoginPresenterImpl implements LoginPresenter
                     public void onError(Throwable e)
                     {
                         Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                        listener.notAuthenticated();
+                        listener.unsuccessfull();
                     }
 
                     @Override
-                    public void onNext(AccessTokenResponse response)
+                    public void onNext(List<Route> response)
                     {
-                        Toast.makeText(context, "Successful login", Toast.LENGTH_SHORT).show();
-                        ApplicationProperties.setAccessToken(response.access_token);
-                        ApplicationProperties.setRefreshToken(response.refresh_token);
                         if (response != null)
-                            listener.authenticated(response);
+                            listener.successfull(response);
                         else
-                            listener.notAuthenticated();
+                            listener.unsuccessfull();
                     }
                 });
     }

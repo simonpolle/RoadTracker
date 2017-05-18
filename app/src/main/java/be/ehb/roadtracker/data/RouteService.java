@@ -18,9 +18,9 @@ import rx.Observable;
 
 public interface RouteService
 {
-    String base = "tasks";
+    String base = "api/route";
 
-    @GET(base + "/all")
+    @GET(base)
     Observable<List<Route>> findAll();
 
     @GET(base + "/{id}")

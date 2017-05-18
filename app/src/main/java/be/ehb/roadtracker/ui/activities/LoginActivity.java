@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements ValidationListen
 
         email.setText("admin@admin.be");
         password.setText("secret");
-        presenter = new LoginPresenterImpl(this, this);
+        presenter = new LoginPresenterImpl(getApplicationContext(), this);
     }
 
     @OnClick(R.id.login_loginBtn)

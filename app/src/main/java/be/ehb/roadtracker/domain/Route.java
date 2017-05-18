@@ -13,7 +13,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties=true)
-public class Route extends SugarRecord
+public class Route
 {
-    private List<Route> routes;
+    private int distance_travelled;
+    private int total_cost;
 }

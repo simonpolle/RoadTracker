@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import be.ehb.roadtracker.ui.fragments.CreateRoute;
+import be.ehb.roadtracker.ui.fragments.ListRoutes;
 
 /**
  * Created by Simon Pollé on 18/05/2017.
@@ -22,11 +23,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
     @Override
     public Fragment getItem(int position)
     {
-        if (position == 1)
+        if (position == 0)
             return CreateRoute.newInstance(position);
+        else if(position == 1)
+            return ListRoutes.newInstance(position);
         else if(position == 2)
-            return CreateRoute.newInstance(position);
-        else if(position == 3)
             return CreateRoute.newInstance(position);
         else
             return CreateRoute.newInstance(position);
