@@ -4,14 +4,15 @@ package be.ehb.roadtracker.ui.helpers;
  * Created by Simon Pollé on 18/05/2017.
  */
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.domain.Route;
+import be.ehb.roadtracker.ui.activities.RouteDetailActivity;
 import java.util.List;
 
 public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.MyViewHolder>
@@ -35,7 +36,13 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.MyViewHold
         @Override
         public void onClick(View v)
         {
-            Toast.makeText(v.getContext().getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
+            distanceTravelled = (TextView) v.findViewById(R.id.distanceTravelled);
+            totalCost = (TextView) v.findViewById(R.id.totalCost);
+            Route route = routes.get(getPosition());
+
+            Intent intent = new Intent(v.getContext(), RouteDetailActivity.class);
+            intent.putExtra("id", route.getId());
+            v.getContext().startActivity(intent);
         }
     }
 

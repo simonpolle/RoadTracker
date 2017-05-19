@@ -13,9 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor(suppressConstructorProperties=true)
 public class User extends SugarRecord
 {
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String last_name;
     private String email;
-    private int roleId;
-    private int companyId;
+    private int role_id;
+    private int company_id;
 }

@@ -1,9 +1,5 @@
 package be.ehb.roadtracker.domain;
 
-import com.orm.SugarRecord;
-
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties=true)
-public class Route
+public class Car
 {
     private long id;
-    private long user_id;
-    private long car_id;
-    private double distance_travelled;
-    private double total_cost;
+    private String licence_plate;
 }

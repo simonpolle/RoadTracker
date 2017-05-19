@@ -18,19 +18,32 @@ public class RoutePresenterImpl implements RoutePresenter
 {
 
     private final Context context;
-    private final RoutePresenterListener listener;
+    private RoutePresenterFindAllListener findAllListener = null;
+    private RoutePresenterGetByIdListener getByIdListener = null;
     private RouteService service;
 
-    public interface RoutePresenterListener
+    public interface RoutePresenterFindAllListener
     {
         void successfull(List<Route> response);
         void unsuccessfull();
     }
 
-    public RoutePresenterImpl(Context context, RoutePresenterImpl.RoutePresenterListener listener)
+    public interface RoutePresenterGetByIdListener
+    {
+        void successfull(Route response);
+        void unsuccessfull();
+    }
+
+    public RoutePresenterImpl(Context context, RoutePresenterImpl.RoutePresenterFindAllListener listener)
     {
         this.context = context;
-        this.listener = listener;
+        this.findAllListener = listener;
+    }
+
+    public RoutePresenterImpl(Context context, RoutePresenterImpl.RoutePresenterGetByIdListener listener)
+    {
+        this.context = context;
+        this.getByIdListener = listener;
     }
 
     public void findAll(int page)
@@ -51,17 +64,50 @@ public class RoutePresenterImpl implements RoutePresenter
                     public void onError(Throwable e)
                     {
                         Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                        listener.unsuccessfull();
+                        findAllListener.unsuccessfull();
                     }
 
                     @Override
                     public void onNext(List<Route> response)
                     {
                         if (response != null)
-                            listener.successfull(response);
+                            findAllListener.successfull(response);
                         else
-                            listener.unsuccessfull();
+                            findAllListener.unsuccessfull();
                     }
                 });
+    }
+
+    @Override
+    public void findOne(long id)
+    {
+        service = ApiClient.getClient().create(RouteService.class);
+
+        service.findOne(id)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<Route>()
+            {
+                @Override
+                public void onCompleted()
+                {
+                }
+
+                @Override
+                public void onError(Throwable e)
+                {
+                    Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    getByIdListener.unsuccessfull();
+                }
+
+                @Override
+                public void onNext(Route response)
+                {
+                    if (response != null)
+                        getByIdListener.successfull(response);
+                    else
+                        getByIdListener.unsuccessfull();
+                }
+            });
     }
 }

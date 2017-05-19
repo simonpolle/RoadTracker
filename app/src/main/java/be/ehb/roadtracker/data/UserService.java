@@ -18,8 +18,8 @@ import rx.Observable;
 
 public interface UserService
 {
-    String base = "api/v1";
+    String base = "api/user";
 
-    @GET(base + "/user")
-    Observable<User> auth();
+    @GET(base)
+    Observable<User> authenticatedUser();
 }

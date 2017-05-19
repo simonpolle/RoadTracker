@@ -25,7 +25,7 @@ public interface RouteService
     Observable<List<Route>> findAll(@Query("page") int page);
 
     @GET(base + "/{id}")
-    Observable<Route> findOne(@Path("id") Long id);
+    Observable<Route> findOne(@Path("id") long id);
 
     @POST(base + "/create")
     Observable<Route> save(@Body Route route);

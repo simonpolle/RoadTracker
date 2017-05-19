@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePresenterListener
+public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePresenterFindAllListener
 {
     @BindView(R.id.not_found)
     TextView notFound;
