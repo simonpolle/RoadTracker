@@ -45,7 +45,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
         switch (position)
         {
             case 0:
-                return "Start";
+                return "Home";
             case 1:
                 return "All Routes";
             case 2:

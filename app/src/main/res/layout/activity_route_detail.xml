@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/activity_home"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingTop="@dimen/activity_vertical_margin"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  tools:context="be.ehb.roadtracker.ui.activities.RouteDetailActivity">
+
+  <android.support.v4.view.ViewPager
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="30dp"
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp"
+    android:layout_alignParentTop="true"
+    android:orientation="vertical">
+
+    <ImageView
+      android:id="@+id/detail_driverIcon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dp"
+      android:background="@color/colorAccent"
+      app:srcCompat="@drawable/ic_person_black_24dp"/>
+    <TextView
+      android:id="@+id/route_detail_nameDriverTitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:text="Driver"
+      android:textAlignment="center"
+      android:textColor="@color/text"
+      android:textSize="25sp"/>
+
+    <TextView
+      android:id="@+id/route_detail_nameDriver"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="30dp"
+      android:ems="10"
+      android:text="Driver"
+      android:textAlignment="center"
+      android:textColor="@color/secondaryText"
+      android:textSize="16sp"/>
+
+    <ImageView
+      android:id="@+id/detail_carIcon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dp"
+      android:background="@color/colorAccent"
+      app:srcCompat="@drawable/ic_directions_car_black_24dp"/>
+    <TextView
+      android:id="@+id/route_detail_licencePlateTitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:text="Car licence plate"
+      android:textAlignment="center"
+      android:textColor="@color/text"
+      android:textSize="25sp"/>
+
+    <TextView
+      android:id="@+id/route_detail_licencePlate"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="30dp"
+      android:ems="10"
+      android:text="Licence plate"
+      android:textAlignment="center"
+      android:textColor="@color/secondaryText"
+      android:textSize="16sp"/>
+
+    <ImageView
+      android:id="@+id/detail_distanceIcon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dp"
+      android:background="@color/colorAccent"
+      app:srcCompat="@drawable/ic_swap_calls_black_24dp"/>
+    <TextView
+      android:id="@+id/route_detail_distanceTravelledTitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:text="Distance travelled"
+      android:textAlignment="center"
+      android:textColor="@color/text"
+      android:textSize="25sp"/>
+
+    <TextView
+      android:id="@+id/route_detail_distanceTravelled"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="30dp"
+      android:ems="10"
+      android:text="Distance"
+      android:textAlignment="center"
+      android:textColor="@color/secondaryText"
+      android:textSize="16sp"/>
+
+    <ImageView
+      android:id="@+id/detail_costIcon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dp"
+      android:background="@color/colorAccent"
+      app:srcCompat="@drawable/ic_payment_black_24dp"/>
+    <TextView
+      android:id="@+id/route_detail_totalCostTitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:text="Total cost"
+      android:textAlignment="center"
+      android:textColor="@color/text"
+      android:textSize="25sp"/>
+
+    <TextView
+      android:id="@+id/route_detail_totalCost"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="30dp"
+      android:ems="10"
+      android:text="Cost"
+      android:textAlignment="center"
+      android:textColor="@color/secondaryText"
+      android:textSize="16sp"/>
+
+  </LinearLayout>
+
+</RelativeLayout>

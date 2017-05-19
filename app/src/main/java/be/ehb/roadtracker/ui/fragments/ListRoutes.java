@@ -1,6 +1,7 @@
 package be.ehb.roadtracker.ui.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,10 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.domain.Route;
-import be.ehb.roadtracker.presenters.LoginPresenterImpl;
 import be.ehb.roadtracker.presenters.RoutePresenterImpl;
 import be.ehb.roadtracker.ui.helpers.EndlessRecyclerViewScrollListener;
 import be.ehb.roadtracker.ui.helpers.RoutesAdapter;
@@ -24,6 +25,9 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
 {
     @BindView(R.id.not_found)
     TextView notFound;
+
+    @BindView(R.id.progress)
+    ProgressBar progressBar;
 
     private List<Route> routes = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -56,6 +60,7 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
 
     public void initializeView(View view)
     {
+        progressBar.setVisibility(View.GONE);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mAdapter = new RoutesAdapter(routes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
@@ -67,8 +72,14 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
         scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
+                progressBar.setVisibility(View.VISIBLE);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        // After 2.5 seconds
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }, 900);
                 presenter.findAll(page + 1);
             }
         };
@@ -79,7 +90,6 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
     @Override
     public void successfull(List<Route> response)
     {
-        //routes.clear();
         routes.addAll(response);
         mAdapter.notifyDataSetChanged();
         notFound.setEnabled(false);

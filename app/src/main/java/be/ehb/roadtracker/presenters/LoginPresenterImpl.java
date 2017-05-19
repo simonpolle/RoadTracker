@@ -59,7 +59,6 @@ public class LoginPresenterImpl implements LoginPresenter
                     @Override
                     public void onNext(AccessTokenResponse response)
                     {
-                        Toast.makeText(context, "Successful login", Toast.LENGTH_SHORT).show();
                         ApplicationProperties.setAccessToken(response.access_token);
                         ApplicationProperties.setRefreshToken(response.refresh_token);
                         if (response != null)

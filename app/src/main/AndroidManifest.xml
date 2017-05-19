@@ -8,13 +8,13 @@
   <uses-permission android:name="android.permission.INTERNET"/>
 
   <application
-    tools:replace="android:icon"
     android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
     android:name="com.orm.SugarApp"
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
-    android:icon="@mipmap/ic_launcher">
+    tools:replace="android:icon">
     <meta-data
       android:name="DATABASE"
       android:value="roadtracker.db"/>
@@ -42,6 +42,8 @@
     <activity android:name=".ui.activities.HomeActivity">
     </activity>
     <activity android:name=".ui.activities.ResultActivity">
+    </activity>
+    <activity android:name=".ui.activities.RouteDetailActivity">
     </activity>
   </application>
 

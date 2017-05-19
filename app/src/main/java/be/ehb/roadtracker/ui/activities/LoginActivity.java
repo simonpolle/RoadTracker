@@ -2,6 +2,7 @@ package be.ehb.roadtracker.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import com.mobsandgeeks.saripaar.Validator.ValidationListener;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
+import com.wang.avi.AVLoadingIndicatorView;
 import java.util.List;
 
 /**
@@ -44,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements ValidationListen
     Button loginBtn;
 
     @BindView(R.id.login_progressBar)
-    ProgressBar progressBar;
+    AVLoadingIndicatorView progressBar;
 
     private String emailString;
     private Validator validator;
@@ -67,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements ValidationListen
         loginBtn.getBackground().setAlpha(150);
 
         this.loginBtn.setEnabled(false);
-        this.progressBar.setVisibility(View.INVISIBLE);
+        this.progressBar.hide();
 
         email.setText("admin@admin.be");
         password.setText("secret");
@@ -81,10 +83,11 @@ public class LoginActivity extends AppCompatActivity implements ValidationListen
         loginBtn.setText("Authenticating...");
         loginBtn.getBackground().setAlpha(150);
         this.emailString = this.email.getText().toString();
-        this.progressBar.setVisibility(View.VISIBLE);
+        this.progressBar.show();
 
         String email = this.emailString;
         String password = this.password.getText().toString();
+        Handler handler = new Handler();
         presenter.login(email, password);
     }
 
@@ -100,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements ValidationListen
     {
         loginBtn.setText("Authentication failed");
         loginBtn.getBackground().setAlpha(255);
-        this.progressBar.setVisibility(View.INVISIBLE);
+        this.progressBar.hide();
     }
 
     @Override
@@ -138,7 +141,12 @@ public class LoginActivity extends AppCompatActivity implements ValidationListen
     @Override
     public void authenticated(AccessTokenResponse response)
     {
-        navigateToHome();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                navigateToHome();
+            }
+        }, 2000);
     }
 
     @Override

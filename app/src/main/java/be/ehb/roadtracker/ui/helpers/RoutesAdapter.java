@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.domain.Route;
 import java.util.List;
@@ -19,7 +19,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.MyViewHold
 
     private List<Route> routes;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
 
         public TextView distanceTravelled, totalCost;
@@ -29,6 +29,13 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.MyViewHold
             super(view);
             distanceTravelled = (TextView) view.findViewById(R.id.distanceTravelled);
             totalCost = (TextView) view.findViewById(R.id.totalCost);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            Toast.makeText(v.getContext().getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -53,6 +60,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.MyViewHold
         holder.distanceTravelled.setText("Distance travelled: " + String.valueOf(route.getDistance_travelled()));
         holder.totalCost.setText("Total cost: " + String.valueOf(route.getTotal_cost()));
     }
+
 
     @Override
     public int getItemCount()

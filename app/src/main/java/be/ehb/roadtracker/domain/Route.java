@@ -15,6 +15,8 @@ import lombok.Setter;
 @AllArgsConstructor(suppressConstructorProperties=true)
 public class Route
 {
+    private long id;
+    private long user_id;
     private double distance_travelled;
     private double total_cost;
 }
