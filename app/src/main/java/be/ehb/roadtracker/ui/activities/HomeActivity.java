@@ -1,5 +1,7 @@
 package be.ehb.roadtracker.ui.activities;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -29,6 +31,7 @@ public class HomeActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_black_24dp);
+        tabLayout.setTabTextColors(getResources().getColor(R.color.blue_btn_bg_pressed_color), getResources().getColor(R.color.blue_btn_bg_color));
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_list_black_24dp);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_settings_black_24dp);
     }

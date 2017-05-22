@@ -23,11 +23,15 @@ import java.util.List;
 
 public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePresenterFindAllListener
 {
+
     @BindView(R.id.not_found)
     TextView notFound;
 
     @BindView(R.id.progress)
     ProgressBar progressBar;
+
+    @BindView(R.id.no_entries)
+    TextView noEntries;
 
     private List<Route> routes = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -60,6 +64,7 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
 
     public void initializeView(View view)
     {
+        noEntries.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mAdapter = new RoutesAdapter(routes);
@@ -69,13 +74,17 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
         recyclerView.setAdapter(mAdapter);
         presenter = new RoutePresenterImpl(view.getContext(), this);
         presenter.findAll(1);
-        scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
+        scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager)
+        {
             @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view)
+            {
                 progressBar.setVisibility(View.VISIBLE);
                 Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
+                handler.postDelayed(new Runnable()
+                {
+                    public void run()
+                    {
                         // After 2.5 seconds
                         progressBar.setVisibility(View.GONE);
                     }
@@ -90,9 +99,19 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
     @Override
     public void successfull(List<Route> response)
     {
-        routes.addAll(response);
-        mAdapter.notifyDataSetChanged();
-        notFound.setEnabled(false);
+        if (response.isEmpty())
+        {
+            if (routes.isEmpty())
+            {
+                noEntries.setVisibility(View.VISIBLE);
+            }
+        } else
+        {
+            noEntries.setVisibility(View.GONE);
+            routes.addAll(response);
+            mAdapter.notifyDataSetChanged();
+            notFound.setEnabled(false);
+        }
     }
 
     @Override

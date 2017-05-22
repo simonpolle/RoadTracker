@@ -13,7 +13,7 @@ public class ApplicationProperties
     private static String CLIENT_SECRET = "Y2jx6ce63UF0Frp3SDOeuoVY0jAmUUfDm1v3ErAK";
     private static String ACCESS_TOKEN = "";
     private static String REFRESH_TOKEN = "";
-    private static String HOST = "http://10.16.25.129:8000";
+    private static String HOST = "https://a37d667e.ngrok.io";
 
     private ApplicationProperties()
     {

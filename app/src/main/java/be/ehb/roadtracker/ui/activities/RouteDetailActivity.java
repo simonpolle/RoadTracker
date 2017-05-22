@@ -3,6 +3,8 @@ package be.ehb.roadtracker.ui.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.domain.Car;
@@ -17,6 +19,9 @@ import butterknife.ButterKnife;
 public class RouteDetailActivity extends AppCompatActivity implements RoutePresenterImpl.RoutePresenterGetByIdListener,
     UserPresenterImpl.UserPresenterAuthenticatedListener, CarPresenterImpl.CarPresenterListener
 {
+
+    @BindView(R.id.progress)
+    ProgressBar progressBar;
 
     @BindView(R.id.route_detail_nameDriver)
     TextView driver;
@@ -34,6 +39,7 @@ public class RouteDetailActivity extends AppCompatActivity implements RoutePrese
     private UserPresenterImpl userPresenter;
     private CarPresenterImpl carPresenter;
     private Route route;
+    private boolean isFetching = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,6 +54,10 @@ public class RouteDetailActivity extends AppCompatActivity implements RoutePrese
     {
         Intent intent = getIntent();
         long id = intent.getExtras().getLong("id");
+        driver.setVisibility(View.GONE);
+        distanceTravelled.setVisibility(View.GONE);
+        licencePlate.setVisibility(View.GONE);
+        totalCost.setVisibility(View.GONE);
         routePresenter = new RoutePresenterImpl(this, this);
         userPresenter = new UserPresenterImpl(this, this);
         carPresenter = new CarPresenterImpl(this, this);
@@ -66,13 +76,18 @@ public class RouteDetailActivity extends AppCompatActivity implements RoutePrese
     @Override
     public void successfull(User response)
     {
-        driver.setText(response.getFirst_name() + response.getLast_name());
+        driver.setText(response.getFirst_name() + " " + response.getLast_name());
     }
 
     @Override
     public void successfull(Car response)
     {
         licencePlate.setText(response.getLicence_plate());
+        progressBar.setVisibility(View.GONE);
+        driver.setVisibility(View.VISIBLE);
+        distanceTravelled.setVisibility(View.VISIBLE);
+        licencePlate.setVisibility(View.VISIBLE);
+        totalCost.setVisibility(View.VISIBLE);
     }
 
     @Override
