@@ -10,10 +10,10 @@ public class ApplicationProperties
 
     private static ApplicationProperties instance = null;
     private static String CLIENT_ID = "1";
-    private static String CLIENT_SECRET = "Y2jx6ce63UF0Frp3SDOeuoVY0jAmUUfDm1v3ErAK";
+    private static String CLIENT_SECRET = "0Poa21hDEL6HRZe6G9oMreZWcUao2ZmdOx4ZD6QV";
     private static String ACCESS_TOKEN = "";
     private static String REFRESH_TOKEN = "";
-    private static String HOST = "https://a37d667e.ngrok.io";
+    private static String HOST = "http://192.168.0.163:8000";
 
     private ApplicationProperties()
     {

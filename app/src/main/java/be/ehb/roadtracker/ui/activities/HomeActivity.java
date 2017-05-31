@@ -1,11 +1,10 @@
 package be.ehb.roadtracker.ui.activities;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.ui.helpers.SectionsPagerAdapter;
 import butterknife.ButterKnife;

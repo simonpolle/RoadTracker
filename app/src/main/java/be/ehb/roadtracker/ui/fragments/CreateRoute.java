@@ -3,6 +3,8 @@ package be.ehb.roadtracker.ui.fragments;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -12,12 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import be.ehb.roadtracker.R;
-import be.ehb.roadtracker.ui.views.HomeView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -25,9 +22,20 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.wang.avi.AVLoadingIndicatorView;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import be.ehb.roadtracker.R;
+import be.ehb.roadtracker.ui.views.HomeView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import fr.quentinklein.slt.LocationTracker;
 import fr.quentinklein.slt.TrackerSettings;
-import java.text.DecimalFormat;
 
 public class CreateRoute extends Fragment implements HomeView
 {
@@ -56,6 +64,11 @@ public class CreateRoute extends Fragment implements HomeView
     @BindView(R.id.home_submit)
     Button submit;
 
+    private List<Location> locations;
+    private boolean isStarted;
+    private Geocoder geocoder;
+    private List<Address> addresses;
+
     public CreateRoute()
     {
     }
@@ -70,7 +83,7 @@ public class CreateRoute extends Fragment implements HomeView
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState)
+                             Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_create_route, container, false);
         ButterKnife.bind(this, view);
@@ -79,30 +92,159 @@ public class CreateRoute extends Fragment implements HomeView
         return view;
     }
 
+    @Override
+    public void initializeView()
+    {
+        this.locations = new ArrayList<>();
+        this.isStarted = false;
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+        this.stop.setVisibility(View.GONE);
+        this.submit.setVisibility(View.GONE);
+        this.location.setText("UNKNOWN");
+        this.searchAnimation.setVisibility(View.VISIBLE);
+        this.status.setText("Waiting for GPS");
+        status.setTextColor(Color.RED);
+        this.start.setEnabled(false);
+    }
+
+    @Override
+    public void requestPermissions()
+    {
+        Dexter.withActivity(getActivity())
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener()
+                {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response)
+                    {
+                        searchLocation();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response)
+                    {
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+                                                                   PermissionToken token)
+                    {
+                    }
+                }).check();
+
+        Dexter.withActivity(getActivity())
+                .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .withListener(new PermissionListener()
+                {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response)
+                    {
+                        searchLocation();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response)
+                    {
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+                                                                   PermissionToken token)
+                    {
+                    }
+                }).check();
+    }
+
+    @Override
+    public void searchLocation()
+    {
+        if (ActivityCompat
+                .checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat
+                .checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            return;
+        }
+        LocationTracker tracker = new LocationTracker(getContext(),
+                new TrackerSettings()
+                        .setUseGPS(true)
+                        .setUseNetwork(false)
+                        .setUsePassive(false)
+                        .setTimeBetweenUpdates(1000)
+        )
+        {
+            @Override
+            public void onLocationFound(Location l)
+            {
+                if (!isStarted)
+                {
+                    locations.add(l);
+                    status.setText("Ready");
+                    status.setTextColor(Color.YELLOW);
+                    try
+                    {
+                        addresses = geocoder.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
+                        if (!addresses.isEmpty())
+                            location.setText(addresses.get(0).getAddressLine(0));
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    searchAnimation.hide();
+                    start.setEnabled(true);
+                } else
+                {
+                    locations.add(l);
+                    try
+                    {
+                        addresses = geocoder.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
+                        if (!addresses.isEmpty())
+                            location.setText(addresses.get(0).getAddressLine(0));
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onTimeout()
+            {
+                status.setText("Could not find location");
+            }
+        };
+        tracker.startListening();
+    }
+
     @OnClick(R.id.home_start)
     public void start()
     {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-            .setTitleText("Are you sure you want to start?")
-            .setContentText("You won't be able to pauze this route!")
-            .setConfirmText("Yes,I understand!")
-            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                @Override
-                public void onClick(SweetAlertDialog sDialog) {
-                    sDialog
-                        .setTitleText("Started!")
-                        .setContentText("You can drive to your desired location!")
-                        .setConfirmText("OK")
-                        .setConfirmClickListener(null)
-                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                    start.setVisibility(View.GONE);
-                    stop.setVisibility(View.VISIBLE);
-                    searchAnimation.setVisibility(View.VISIBLE);
-                    status.setText("Running");
-                    status.setTextColor(Color.GREEN);
-                }
-            })
-            .show();
+                .setTitleText("Are you sure you want to start?")
+                .setContentText("You won't be able to pause this route!")
+                .setConfirmText("Yes,I understand!")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener()
+                {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog)
+                    {
+                        sDialog
+                                .setTitleText("Started!")
+                                .setContentText("You can drive to your desired location!")
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(null)
+                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        isStarted = true;
+                        start.setVisibility(View.GONE);
+                        stop.setVisibility(View.VISIBLE);
+                        searchAnimation.setVisibility(View.VISIBLE);
+                        status.setText("Running");
+                        status.setTextColor(Color.GREEN);
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.home_stop)
@@ -119,106 +261,6 @@ public class CreateRoute extends Fragment implements HomeView
     public void submit()
     {
 
-    }
-
-    @Override
-    public void initializeView()
-    {
-        this.stop.setVisibility(View.GONE);
-        this.submit.setVisibility(View.GONE);
-        this.location.setText("UNKNOWN");
-        this.searchAnimation.setVisibility(View.VISIBLE);
-        this.status.setText("Waiting for GPS");
-        status.setTextColor(Color.RED);
-        this.start.setEnabled(false);
-    }
-
-    @Override
-    public void requestPermissions()
-    {
-        Dexter.withActivity(getActivity())
-            .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-            .withListener(new PermissionListener()
-            {
-                @Override
-                public void onPermissionGranted(PermissionGrantedResponse response)
-                {
-                    searchLocation();
-                }
-
-                @Override
-                public void onPermissionDenied(PermissionDeniedResponse response)
-                {
-                }
-
-                @Override
-                public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
-                    PermissionToken token)
-                {
-                }
-            }).check();
-
-        Dexter.withActivity(getActivity())
-            .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-            .withListener(new PermissionListener()
-            {
-                @Override
-                public void onPermissionGranted(PermissionGrantedResponse response)
-                {
-                    searchLocation();
-                }
-
-                @Override
-                public void onPermissionDenied(PermissionDeniedResponse response)
-                {
-                }
-
-                @Override
-                public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
-                    PermissionToken token)
-                {
-                }
-            }).check();
-    }
-
-    @Override
-    public void searchLocation()
-    {
-        if (ActivityCompat
-            .checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED && ActivityCompat
-            .checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED)
-        {
-            return;
-        }
-        LocationTracker tracker = new LocationTracker(getContext(),
-            new TrackerSettings()
-                .setUseGPS(true)
-                .setUseNetwork(false)
-                .setUsePassive(false)
-                .setTimeBetweenUpdates(1000)
-        )
-        {
-            @Override
-            public void onLocationFound(Location l)
-            {
-                status.setText("Ready");
-                status.setTextColor(Color.YELLOW);
-                location.setText(
-                    String.valueOf(new DecimalFormat("##.####").format(l.getLatitude())) + "\n"
-                        + String.valueOf(new DecimalFormat("##.####").format(l.getLongitude())));
-                searchAnimation.hide();
-                start.setEnabled(true);
-            }
-
-            @Override
-            public void onTimeout()
-            {
-                status.setText("Could not find location");
-            }
-        };
-        tracker.startListening();
     }
 
     @Override
