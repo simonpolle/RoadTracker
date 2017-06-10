@@ -2,12 +2,10 @@ package be.ehb.roadtracker.presenters;
 
 import android.content.Context;
 import android.widget.Toast;
+
 import be.ehb.roadtracker.config.ApiClient;
-import be.ehb.roadtracker.data.RouteService;
-import be.ehb.roadtracker.data.UserService;
-import be.ehb.roadtracker.domain.Route;
-import be.ehb.roadtracker.domain.User;
-import java.util.List;
+import be.ehb.roadtracker.data.LocationService;
+import be.ehb.roadtracker.domain.Locations;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -16,35 +14,34 @@ import rx.schedulers.Schedulers;
  * Created by Simon Pollé on 15/03/2017.
  */
 
-public class UserPresenterImpl implements UserPresenter
+public class LocationPresenterImpl implements LocationPresenter
 {
 
     private final Context context;
-    private UserPresenterAuthenticatedListener authenticatedListener = null;
-    private UserService service;
+    private LocationPresenterListener locationPresenterListener = null;
+    private LocationService service;
 
-    public interface UserPresenterAuthenticatedListener
+    public interface LocationPresenterListener
     {
-
-        void successfull(User response);
+        void successfull(Locations response);
         void unsuccessfull();
     }
 
-    public UserPresenterImpl(Context context,
-        UserPresenterImpl.UserPresenterAuthenticatedListener listener)
+    public LocationPresenterImpl(Context context,
+                                 LocationPresenterImpl.LocationPresenterListener listener)
     {
         this.context = context;
-        this.authenticatedListener = listener;
+        this.locationPresenterListener = listener;
     }
 
-    public void authenticatedUser()
+    public void save(Locations locations)
     {
-        service = ApiClient.getClient().create(UserService.class);
+        service = ApiClient.getClient().create(LocationService.class);
 
-        service.authenticatedUser()
+        service.save(locations)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Observer<User>()
+            .subscribe(new Observer<Locations>()
             {
                 @Override
                 public void onCompleted()
@@ -55,18 +52,18 @@ public class UserPresenterImpl implements UserPresenter
                 public void onError(Throwable e)
                 {
                     Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                    authenticatedListener.unsuccessfull();
+                    locationPresenterListener.unsuccessfull();
                 }
 
                 @Override
-                public void onNext(User response)
+                public void onNext(Locations response)
                 {
                     if (response != null)
                     {
-                        authenticatedListener.successfull(response);
+                        locationPresenterListener.successfull(response);
                     } else
                     {
-                        authenticatedListener.unsuccessfull();
+                        locationPresenterListener.unsuccessfull();
                     }
                 }
             });

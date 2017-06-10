@@ -7,10 +7,11 @@ package be.ehb.roadtracker.config;
 
 public class ApplicationProperties
 {
+    /*don't forget to change client secret*/
 
     private static ApplicationProperties instance = null;
     private static String CLIENT_ID = "1";
-    private static String CLIENT_SECRET = "0Poa21hDEL6HRZe6G9oMreZWcUao2ZmdOx4ZD6QV";
+    private static String CLIENT_SECRET = "TxbKp0aY8IORKuf7HG4MLtI4iKDkuwyzOPXTiMd6";
     private static String ACCESS_TOKEN = "";
     private static String REFRESH_TOKEN = "";
     private static String HOST = "http://192.168.0.163:8000";

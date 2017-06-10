@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -29,6 +31,11 @@ import java.util.List;
 import java.util.Locale;
 
 import be.ehb.roadtracker.R;
+import be.ehb.roadtracker.domain.Locations;
+import be.ehb.roadtracker.presenters.LocationPresenter;
+import be.ehb.roadtracker.presenters.LocationPresenterImpl;
+import be.ehb.roadtracker.presenters.LoginPresenterImpl;
+import be.ehb.roadtracker.presenters.RoutePresenterImpl;
 import be.ehb.roadtracker.ui.views.HomeView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +44,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import fr.quentinklein.slt.LocationTracker;
 import fr.quentinklein.slt.TrackerSettings;
 
-public class CreateRoute extends Fragment implements HomeView
+public class CreateRoute extends Fragment implements HomeView, LocationPresenterImpl.LocationPresenterListener
 {
 
     @BindView(R.id.home_statusTitle)
@@ -68,6 +75,7 @@ public class CreateRoute extends Fragment implements HomeView
     private boolean isStarted;
     private Geocoder geocoder;
     private List<Address> addresses;
+    private LocationPresenterImpl presenter;
 
     public CreateRoute()
     {
@@ -105,6 +113,7 @@ public class CreateRoute extends Fragment implements HomeView
         this.status.setText("Waiting for GPS");
         status.setTextColor(Color.RED);
         this.start.setEnabled(false);
+        presenter = new LocationPresenterImpl(getContext(), this);
     }
 
     @Override
@@ -177,6 +186,7 @@ public class CreateRoute extends Fragment implements HomeView
             @Override
             public void onLocationFound(Location l)
             {
+                Toast.makeText(getContext(), l.toString(), Toast.LENGTH_SHORT).show();
                 if (!isStarted)
                 {
                     locations.add(l);
@@ -260,7 +270,14 @@ public class CreateRoute extends Fragment implements HomeView
     @OnClick(R.id.home_submit)
     public void submit()
     {
+        List<be.ehb.roadtracker.domain.Location> convertedLocations = new ArrayList<>();
 
+        for (Location location : locations)
+        {
+            convertedLocations.add(new be.ehb.roadtracker.domain.Location(location.getLatitude(), location.getLongitude(), 1));
+        }
+
+        presenter.save(new Locations(convertedLocations));
     }
 
     @Override
@@ -274,4 +291,26 @@ public class CreateRoute extends Fragment implements HomeView
         this.stop.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void successfull(Locations response)
+    {
+        new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Good job!")
+                .setContentText("You clicked the button!")
+                .show();
+
+        this.locations.clear();
+
+    }
+
+    @Override
+    public void unsuccessfull()
+    {
+        new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Good dqsf!")
+                .setContentText("You clicked the button!")
+                .show();
+
+        this.locations.clear();
+    }
 }
