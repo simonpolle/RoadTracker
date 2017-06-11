@@ -6,10 +6,19 @@
   android:layout_height="match_parent"
   tools:context="be.ehb.roadtracker.ui.fragments.ListRoutes">
 
+  <Button
+      android:id="@+id/login_refreshBtn"
+      style="@style/CustomButtonStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Refresh"
+      android:textSize="10sp"/>
+
   <android.support.v7.widget.RecyclerView
     android:id="@+id/recycler_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
     android:scrollbars="vertical" />
 
   <TextView
@@ -37,5 +46,7 @@
     android:textSize="20sp"
     android:layout_marginTop="100dp"
     android:textColor="@color/blue_btn_bg_pressed_color"/>
+
+
 
 </RelativeLayout>

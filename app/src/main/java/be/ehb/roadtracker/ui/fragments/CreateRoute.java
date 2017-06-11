@@ -296,7 +296,7 @@ public class CreateRoute extends Fragment implements HomeView, LocationPresenter
     {
         new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
                 .setTitleText("Good job!")
-                .setContentText("You clicked the button!")
+                .setContentText("Route successfully added!")
                 .show();
 
         this.locations.clear();
@@ -307,8 +307,8 @@ public class CreateRoute extends Fragment implements HomeView, LocationPresenter
     public void unsuccessfull()
     {
         new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText("Good dqsf!")
-                .setContentText("You clicked the button!")
+                .setTitleText("Good job!")
+                .setContentText("Route successfully added!")
                 .show();
 
         this.locations.clear();

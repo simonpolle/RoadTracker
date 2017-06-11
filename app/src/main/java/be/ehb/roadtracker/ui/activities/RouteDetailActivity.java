@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.text.DecimalFormat;
+
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.domain.Car;
 import be.ehb.roadtracker.domain.Route;
@@ -68,8 +71,10 @@ public class RouteDetailActivity extends AppCompatActivity implements RoutePrese
     @Override
     public void successfull(Route response)
     {
-        distanceTravelled.setText(String.valueOf(response.getDistance_travelled()));
-        totalCost.setText(String.valueOf(response.getTotal_cost()));
+        DecimalFormat precision = new DecimalFormat("0.00");
+        distanceTravelled.setText(String.valueOf(precision.format(response.getDistance_travelled())));
+
+        totalCost.setText(String.valueOf(precision.format(response.getTotal_cost())));
         carPresenter.findOne(response.getCar_id());
     }
 

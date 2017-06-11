@@ -11,7 +11,7 @@ public class ApplicationProperties
 
     private static ApplicationProperties instance = null;
     private static String CLIENT_ID = "1";
-    private static String CLIENT_SECRET = "TxbKp0aY8IORKuf7HG4MLtI4iKDkuwyzOPXTiMd6";
+    private static String CLIENT_SECRET = "J9YEea8j3LNc91q8bKBNg5dXd3nLTt353mLP7Snq";
     private static String ACCESS_TOKEN = "";
     private static String REFRESH_TOKEN = "";
     private static String HOST = "http://192.168.0.163:8000";
@@ -33,17 +33,13 @@ public class ApplicationProperties
     {
         return CLIENT_ID;
     }
-
     public static String getClientSecret()
     {
         return CLIENT_SECRET;
     }
-
     public static String getHOST() { return HOST; }
-
     public static String getAccessToken() { return ACCESS_TOKEN; }
     public static String getRefreshToken() { return REFRESH_TOKEN; }
-
     public static void setHOST(String HOST) { ApplicationProperties.HOST = HOST; }
     public static void setAccessToken(String ACCESS_TOKEN) { ApplicationProperties.ACCESS_TOKEN = ACCESS_TOKEN; }
     public static void setRefreshToken(String REFRESH_TOKEN) { ApplicationProperties.REFRESH_TOKEN = REFRESH_TOKEN; }

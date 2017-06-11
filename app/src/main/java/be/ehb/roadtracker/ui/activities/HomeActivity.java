@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.ui.helpers.SectionsPagerAdapter;
@@ -32,6 +33,5 @@ public class HomeActivity extends AppCompatActivity
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_black_24dp);
         tabLayout.setTabTextColors(getResources().getColor(R.color.blue_btn_bg_pressed_color), getResources().getColor(R.color.blue_btn_bg_color));
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_list_black_24dp);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_settings_black_24dp);
     }
 }

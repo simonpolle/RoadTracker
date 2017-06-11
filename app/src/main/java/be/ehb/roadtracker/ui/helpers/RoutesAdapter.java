@@ -13,6 +13,8 @@ import android.widget.TextView;
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.domain.Route;
 import be.ehb.roadtracker.ui.activities.RouteDetailActivity;
+
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.MyViewHolder>
@@ -63,9 +65,10 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position)
     {
+        DecimalFormat precision = new DecimalFormat("0.00");
         Route route = routes.get(position);
-        holder.distanceTravelled.setText("Distance travelled: " + String.valueOf(route.getDistance_travelled()));
-        holder.totalCost.setText("Total cost: " + String.valueOf(route.getTotal_cost()));
+        holder.distanceTravelled.setText("Distance travelled: " + String.valueOf(precision.format(route.getDistance_travelled())));
+        holder.totalCost.setText("Total cost: " + String.valueOf(precision.format(route.getTotal_cost())));
     }
 
 
