@@ -1,5 +1,6 @@
 package be.ehb.roadtracker.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -9,15 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import be.ehb.roadtracker.R;
 import be.ehb.roadtracker.domain.Route;
 import be.ehb.roadtracker.presenters.RoutePresenterImpl;
+import be.ehb.roadtracker.ui.activities.LoginActivity;
 import be.ehb.roadtracker.ui.helpers.EndlessRecyclerViewScrollListener;
 import be.ehb.roadtracker.ui.helpers.RoutesAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +38,13 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
     @BindView(R.id.no_entries)
     TextView noEntries;
 
+
     private List<Route> routes = new ArrayList<>();
     private RecyclerView recyclerView;
     private RoutesAdapter mAdapter;
     private RoutePresenterImpl presenter;
     private EndlessRecyclerViewScrollListener scrollListener;
+    private View view;
 
 
     public ListRoutes()
@@ -59,6 +66,7 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
         View view = inflater.inflate(R.layout.fragment_list_routes, container, false);
         ButterKnife.bind(this, view);
         initializeView(view);
+        this.view = view;
         return view;
     }
 
@@ -121,6 +129,13 @@ public class ListRoutes extends Fragment implements RoutePresenterImpl.RoutePres
         mAdapter.notifyDataSetChanged();
         notFound.setEnabled(true);
         notFound.setText("No routes found");
+    }
+
+    @OnClick(R.id.refreshBtn)
+    public void onRefreshClicked()
+    {
+        this.routes.clear();
+        initializeView(this.view);
     }
 }
 
