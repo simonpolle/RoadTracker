@@ -12,7 +12,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +47,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import fr.quentinklein.slt.LocationTracker;
 import fr.quentinklein.slt.TrackerSettings;
 
-public class CreateRoute extends Fragment implements HomeView, LocationPresenterImpl.LocationPresenterListener
+public class CreateRoute extends Fragment implements HomeView, LocationPresenterImpl.LocationPresenterListener, AdapterView.OnItemSelectedListener
 {
 
     @BindView(R.id.home_statusTitle)
@@ -97,6 +100,11 @@ public class CreateRoute extends Fragment implements HomeView, LocationPresenter
         ButterKnife.bind(this, view);
         initializeView();
         requestPermissions();
+
+
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, categories);
+//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner.setAdapter(dataAdapter);
         return view;
     }
 
@@ -299,6 +307,8 @@ public class CreateRoute extends Fragment implements HomeView, LocationPresenter
                 .setContentText("Route successfully added!")
                 .show();
 
+        searchLocation();
+        initializeView();
         this.locations.clear();
 
     }
@@ -311,6 +321,20 @@ public class CreateRoute extends Fragment implements HomeView, LocationPresenter
                 .setContentText("Route successfully added!")
                 .show();
 
+        searchLocation();
+        initializeView();
         this.locations.clear();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent)
+    {
+
     }
 }
