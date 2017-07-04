@@ -12,13 +12,15 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Install Android Studio
-Install/Configure Emulators or Android Devices
-Create/Configure an emulator
-Install and Create/Configure GenyMotion emulator
-Configure an Android device
-Import the project into Android Studio
+* Install Android Studio
+* Install/Configure Emulators or Android Devices
+* Create/Configure an emulator
+* Install and Create/Configure GenyMotion emulator
+* Configure an Android device
+* Import the project into Android Studio
+* VCS > Checkout from version control > GitHub
+* Repository URL : https://github.com/simonpolle/RoadTracker.git 
+* Clone
 
-VCS > Checkout from version control > GitHub
-Repository URL : https://github.com/simonpolle/RoadTracker.git
-Clone
+## License
+This project is licensed under the MIT License
