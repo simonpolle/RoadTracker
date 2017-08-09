@@ -1,5 +1,0 @@
-******************
-
-    gebruik sugarORM om locaties op te slagen
-    authenticatie met access_tokens (interceptor)
-    NFC scanning
